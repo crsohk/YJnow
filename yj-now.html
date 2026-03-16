@@ -9,146 +9,118 @@
       box-sizing: border-box; margin: 0; padding: 0;
       -webkit-tap-highlight-color: transparent;
     }
-
     :root {
-      --bg:      #000000;
-      --surface: rgba(255,255,255,0.06);
-      --border:  rgba(255,255,255,0.09);
-      --accent:  #6366f1;
-      --a2:      #818cf8;
-      --green:   #30d158;
-      --text:    #ffffff;
-      --muted:   rgba(255,255,255,0.4);
-      --sec:     rgba(255,255,255,0.65);
+      --bg:     #000;
+      --surf:   rgba(255,255,255,0.06);
+      --bord:   rgba(255,255,255,0.09);
+      --acc:    #6366f1;
+      --a2:     #818cf8;
+      --green:  #30d158;
+      --text:   #fff;
+      --muted:  rgba(255,255,255,0.4);
+      --sec:    rgba(255,255,255,0.65);
     }
-
     html, body {
       height: 100%;
       background: var(--bg);
-      /* SF Pro — best iOS font, falls back gracefully */
       font-family: -apple-system, "SF Pro Display", BlinkMacSystemFont, system-ui, sans-serif;
       color: var(--text);
       overflow: hidden;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
-
-    /* ── Background glow ── */
     body::before {
       content: '';
-      position: fixed; inset: 0;
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background:
-        radial-gradient(ellipse 60% 35% at 50% 0%, rgba(99,102,241,0.14) 0%, transparent 65%),
-        radial-gradient(ellipse 40% 25% at 80% 100%, rgba(129,140,248,0.07) 0%, transparent 60%);
-      pointer-events: none; z-index: 0;
+        radial-gradient(ellipse 65% 32% at 50% 0%,   rgba(99,102,241,.15) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 22% at 80% 100%, rgba(129,140,248,.07) 0%, transparent 60%);
     }
 
-    /* ── App shell ── */
+    /* ── SHELL ── */
     .app {
       position: relative; z-index: 1;
       height: 100dvh;
-      max-width: 390px;
-      margin: 0 auto;
+      max-width: 390px; margin: 0 auto;
       display: flex; flex-direction: column;
       padding-top:    env(safe-area-inset-top,    44px);
       padding-bottom: env(safe-area-inset-bottom, 20px);
     }
 
-    /* ═══════════════════════════════
-       TOP BAR
-    ═══════════════════════════════ */
+    /* ═══════════════════════════
+       1. TOP BAR  — bigger
+    ═══════════════════════════ */
     .top-bar {
       flex-shrink: 0;
       display: flex; justify-content: space-between; align-items: center;
-      padding: 8px 22px 4px;
+      padding: 10px 22px 6px;
     }
-
-    .logo { display: flex; align-items: center; gap: 6px; }
+    .logo { display: flex; align-items: center; gap: 8px; }
     .logo-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 8px var(--accent), 0 0 20px rgba(99,102,241,.3);
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--acc);
+      box-shadow: 0 0 10px var(--acc), 0 0 22px rgba(99,102,241,.35);
       animation: pulse 2s ease-in-out infinite;
     }
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.65)} }
     .logo-text {
-      font-size: 11px; font-weight: 700;
-      letter-spacing: .22em; text-transform: uppercase; color: var(--a2);
+      /* ③ 로고 키움 */
+      font-size: 15px; font-weight: 800;
+      letter-spacing: .2em; text-transform: uppercase; color: var(--a2);
     }
     .live-badge {
-      display: flex; align-items: center; gap: 4px;
-      background: rgba(48,209,88,.1); border: 1px solid rgba(48,209,88,.22);
-      border-radius: 100px; padding: 3px 9px;
-      font-size: 10px; font-weight: 600; color: var(--green); letter-spacing: .08em;
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(48,209,88,.12); border: 1px solid rgba(48,209,88,.25);
+      border-radius: 100px; padding: 5px 13px;
+      /* ③ LIVE 배지 키움 */
+      font-size: 13px; font-weight: 700; color: var(--green); letter-spacing: .1em;
     }
     .live-dot {
-      width: 5px; height: 5px; border-radius: 50%; background: var(--green);
+      width: 7px; height: 7px; border-radius: 50%; background: var(--green);
       animation: blink 1.4s step-end infinite;
     }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-
-    /* ═══════════════════════════════
-       HERO  — 지금 진행 중 (BIGGEST)
-    ═══════════════════════════════ */
+    /* ═══════════════════════════
+       2. HERO  — 지금 진행 중 (bigger)
+    ═══════════════════════════ */
     .hero {
       flex-shrink: 0;
       display: flex; flex-direction: column; align-items: center; text-align: center;
-      padding: 10px 28px 4px;
+      padding: 8px 28px 4px;
     }
-
     .hero-label {
-      font-size: 11px; font-weight: 600;
+      font-size: 12px; font-weight: 600;
       letter-spacing: .2em; text-transform: uppercase; color: var(--a2);
       margin-bottom: 6px;
     }
-
-    .hero-emoji { font-size: 52px; line-height: 1; margin-bottom: 8px; }
-
+    .hero-emoji { font-size: 50px; line-height: 1; margin-bottom: 8px; }
     .hero-name {
-      font-size: clamp(34px, 10vw, 46px);
-      font-weight: 700; letter-spacing: -.03em; line-height: 1.05;
-      color: #fff;
+      /* ④ 메인 일정 더 크게 */
+      font-size: clamp(40px, 11vw, 54px);
+      font-weight: 800; letter-spacing: -.03em; line-height: 1.05; color: #fff;
     }
-
     .hero-since {
-      margin-top: 5px;
-      font-size: 13px; color: var(--muted); font-weight: 400;
+      margin-top: 5px; font-size: 13px; color: var(--muted); font-weight: 400;
     }
-
-    /* thin progress bar under hero */
-    .hero-prog { width: 100%; max-width: 260px; margin-top: 12px; }
-    .hp-meta {
-      display: flex; justify-content: space-between;
-      font-size: 10px; color: var(--muted); margin-bottom: 5px;
-    }
+    .hero-prog { width: 100%; max-width: 270px; margin-top: 12px; }
+    .hp-meta { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-bottom: 5px; }
     .hp-track { height: 2.5px; background: rgba(255,255,255,.08); border-radius: 100px; overflow: hidden; }
-    .hp-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--a2));
-      border-radius: 100px; transition: width .6s ease;
-    }
+    .hp-fill  { height: 100%; background: linear-gradient(90deg, var(--acc), var(--a2)); border-radius: 100px; transition: width .6s; }
 
-
-    /* ═══════════════════════════════
-       CLOCK
-    ═══════════════════════════════ */
+    /* ═══════════════════════════
+       3. CLOCK
+    ═══════════════════════════ */
     .clock-block {
       flex-shrink: 0;
       text-align: center;
-      padding: 8px 22px 2px;
+      padding: 6px 22px 4px;
     }
-
     .clock-face {
-      font-size: clamp(60px, 18vw, 78px);
+      font-size: clamp(62px, 18vw, 80px);
       font-weight: 100; letter-spacing: -.04em; line-height: 1;
     }
     .clock-face .c { color: var(--a2); animation: blink 1s step-end infinite; }
-    .clock-face .s {
-      font-size: .27em; color: var(--muted); font-weight: 300;
-      vertical-align: 0.1em;
-    }
-
+    .clock-face .s { font-size: .27em; color: var(--muted); font-weight: 300; vertical-align: 0.1em; }
     .clock-meta {
       display: flex; justify-content: center; align-items: center; gap: 8px;
       margin-top: 3px; font-size: 12px; color: var(--muted);
@@ -159,102 +131,14 @@
       font-size: 11px; font-weight: 600; color: var(--a2);
     }
 
-
-    /* ═══════════════════════════════
-       3-D DRUM DIAL
-    ═══════════════════════════════ */
-    .dial-section {
-      flex: 1;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      min-height: 0;
-      padding: 2px 0 4px;
-    }
-
-    .dial-heading {
-      font-size: 10px; font-weight: 600;
-      letter-spacing: .15em; text-transform: uppercase;
-      color: rgba(255,255,255,.18);
-      margin-bottom: 8px;
-    }
-
-    /* Outer wrapper — clips side bleed & hosts the frame */
-    .dial-outer {
-      position: relative;
-      width: 100%; display: flex; align-items: center; justify-content: center;
-    }
-
-    /* Left/right edge fade to simulate drum depth */
-    .dial-outer::before, .dial-outer::after {
-      content: ''; position: absolute; top: 0; bottom: 0;
-      width: 90px; z-index: 3; pointer-events: none;
-    }
-    .dial-outer::before { left:  0; background: linear-gradient(to right, #000 0%, transparent 100%); }
-    .dial-outer::after  { right: 0; background: linear-gradient(to left,  #000 0%, transparent 100%); }
-
-    /* Selection highlight frame */
-    .dial-frame {
-      position: absolute; z-index: 2; pointer-events: none;
-      width: 160px; height: 62px;
-      border: 1px solid rgba(99,102,241,.35); border-radius: 14px;
-      background: rgba(99,102,241,.05);
-    }
-
-    /* 3-D viewport — perspective source */
-    .drum-vp {
-      width: 360px; height: 72px;
-      perspective: 520px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: grab; user-select: none; -webkit-user-select: none;
-      touch-action: none;
-    }
-    .drum-vp:active { cursor: grabbing; }
-
-    /* The rotating stage */
-    .drum-stage {
-      width: 155px; height: 64px;
-      transform-style: preserve-3d;
-      position: relative;
-      will-change: transform;
-    }
-
-    /* Individual drum items */
-    .drum-item {
-      position: absolute; top: 0; left: 0;
-      width: 155px; height: 64px;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 2px;
-      will-change: opacity;
-    }
-
-    .di-icon { font-size: 15px; line-height: 1; }
-    .di-name {
-      font-size: 13px; font-weight: 600;
-      color: rgba(255,255,255,.82);
-      white-space: nowrap; max-width: 145px;
-      overflow: hidden; text-overflow: ellipsis; text-align: center;
-      transition: color .15s, font-weight .15s;
-    }
-    .di-time {
-      font-size: 10px; color: var(--muted);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .dial-hint {
-      margin-top: 8px;
-      font-size: 10px; color: rgba(255,255,255,.15);
-    }
-
-
-    /* ═══════════════════════════════
-       WEATHER BAR
-    ═══════════════════════════════ */
+    /* ═══════════════════════════
+       4. WEATHER  — 요일 바로 아래 ②
+    ═══════════════════════════ */
     .weather-bar {
       flex-shrink: 0;
       display: flex; align-items: center; gap: 10px;
-      margin: 4px 20px 0;
-      background: var(--surface); border: 1px solid var(--border);
+      margin: 8px 20px 0;
+      background: var(--surf); border: 1px solid var(--bord);
       border-radius: 16px; padding: 10px 15px;
     }
     .wb-icon { font-size: 22px; }
@@ -266,6 +150,149 @@
     .wb-e { display: flex; flex-direction: column; align-items: flex-end; }
     .wb-e .v { font-size: 11px; font-weight: 600; color: var(--sec); }
     .wb-e .k { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+
+    /* ═══════════════════════════
+       5. 오늘의 운세
+    ═══════════════════════════ */
+    .fortune-card {
+      flex-shrink: 0;
+      margin: 8px 20px 0;
+      background: rgba(251,191,36,.07);
+      border: 1px solid rgba(251,191,36,.22);
+      border-radius: 16px;
+      padding: 11px 15px;
+    }
+    .fortune-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 7px;
+    }
+    .fortune-title {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(251,191,36,.85);
+    }
+    .fortune-stars { font-size: 13px; letter-spacing: 1px; }
+    .fortune-msg {
+      font-size: 12px; color: rgba(255,255,255,.78);
+      line-height: 1.5; word-break: keep-all;
+    }
+    .fortune-tags {
+      display: flex; gap: 6px; margin-top: 8px;
+    }
+    .fortune-tag {
+      display: flex; align-items: center; gap: 3px;
+      background: rgba(255,255,255,.06);
+      border-radius: 100px; padding: 2px 8px;
+      font-size: 10px; color: var(--muted);
+    }
+    .fortune-tag .tag-val { color: rgba(251,191,36,.9); font-weight: 700; }
+
+    /* ═══════════════════════════
+       6. DRUM DIAL
+       STEP=76°(2배), R=95px, item width=105px
+       인접 중심 간격 ≈ 2×95×sin76° ≈ 184px
+       체감 폭 ≈ 105×cos76° ≈ 25px → 간격 160px ✓
+    ═══════════════════════════ */
+    .dial-section {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 0; padding: 4px 0 2px;
+    }
+    .dial-heading {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: rgba(255,255,255,.18); margin-bottom: 8px;
+    }
+    .dial-outer {
+      position: relative;
+      width: 100%; display: flex; align-items: center; justify-content: center;
+    }
+    .dial-outer::before, .dial-outer::after {
+      content: ''; position: absolute; top: 0; bottom: 0;
+      width: 85px; z-index: 3; pointer-events: none;
+    }
+    .dial-outer::before { left:  0; background: linear-gradient(to right, #000 0%, transparent 100%); }
+    .dial-outer::after  { right: 0; background: linear-gradient(to left,  #000 0%, transparent 100%); }
+    .dial-frame {
+      position: absolute; z-index: 2; pointer-events: none;
+      width: 148px; height: 68px;
+      border: 1px solid rgba(99,102,241,.35); border-radius: 14px;
+      background: rgba(99,102,241,.05);
+    }
+    .drum-vp {
+      width: 360px; height: 76px;
+      perspective: 480px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: grab; user-select: none; -webkit-user-select: none;
+      touch-action: none;
+    }
+    .drum-vp:active { cursor: grabbing; }
+    .drum-stage {
+      width: 105px; height: 64px;
+      transform-style: preserve-3d;
+      position: relative;
+      will-change: transform;
+    }
+    .drum-item {
+      position: absolute; top: 0; left: 0;
+      width: 105px; height: 64px;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 3px;
+    }
+    .di-icon { font-size: 15px; line-height: 1; }
+    .di-name {
+      font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,.82);
+      /* 한 줄 고정 — 컨테이너 밖으로 절대 안 넘침 */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100px;
+      text-align: center;
+      transition: color .15s;
+    }
+    .di-time {
+      font-size: 10px; color: var(--muted); font-variant-numeric: tabular-nums;
+    }
+    .dial-hint { margin-top: 8px; font-size: 10px; color: rgba(255,255,255,.15); }
+
+    /* ═══════════════════════════
+       6. FIND MY BUTTON
+    ═══════════════════════════ */
+    .findmy-btn {
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      margin: 10px 20px 0;
+      background: rgba(48,209,88,.12);
+      border: 1px solid rgba(48,209,88,.28);
+      border-radius: 16px;
+      padding: 14px 20px;
+      text-decoration: none;
+      color: var(--text);
+      /* 탭 시 살짝 눌리는 효과 */
+      transition: background .15s, transform .1s;
+      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+    }
+    .findmy-btn:active {
+      background: rgba(48,209,88,.22);
+      transform: scale(0.97);
+    }
+    .findmy-icon {
+      font-size: 24px; line-height: 1; flex-shrink: 0;
+    }
+    .findmy-body { flex: 1; }
+    .findmy-title {
+      font-size: 15px; font-weight: 700; color: #fff;
+    }
+    .findmy-sub {
+      font-size: 11px; color: var(--muted); margin-top: 1px;
+    }
+    .findmy-arrow {
+      font-size: 18px; color: rgba(48,209,88,.7);
+    }
   </style>
 </head>
 <body>
@@ -283,7 +310,7 @@
   <!-- HERO -->
   <div class="hero">
     <div class="hero-label">지금 진행 중</div>
-    <div class="hero-emoji" id="curr-icon">📚</div>
+    <div class="hero-emoji" id="curr-icon">💤</div>
     <div class="hero-name"  id="curr-name">로딩 중</div>
     <div class="hero-since" id="curr-since">--:--</div>
     <div class="hero-prog">
@@ -292,9 +319,7 @@
         <span id="hp-pct">0%</span>
         <span id="hp-to">-</span>
       </div>
-      <div class="hp-track">
-        <div class="hp-fill" id="hp-fill" style="width:0%"></div>
-      </div>
+      <div class="hp-track"><div class="hp-fill" id="hp-fill" style="width:0%"></div></div>
     </div>
   </div>
 
@@ -309,19 +334,7 @@
     </div>
   </div>
 
-  <!-- 3-D DRUM DIAL -->
-  <div class="dial-section">
-    <div class="dial-heading">← 일정 다이얼 →</div>
-    <div class="dial-outer">
-      <div class="dial-frame"></div>
-      <div class="drum-vp" id="drum-vp">
-        <div class="drum-stage" id="drum-stage"></div>
-      </div>
-    </div>
-    <div class="dial-hint">드래그하여 일정 탐색</div>
-  </div>
-
-  <!-- WEATHER -->
+  <!-- ② WEATHER — 요일 바로 아래로 이동 -->
   <div class="weather-bar">
     <span class="wb-icon" id="wb-icon">🌤</span>
     <div class="wb-info">
@@ -335,13 +348,43 @@
     </div>
   </div>
 
-</div><!-- .app -->
+  <!-- ① DRUM DIAL — 겹침 수정 -->
+  <div class="dial-section">
+    <div class="dial-heading">← 일정 다이얼 →</div>
+    <div class="dial-outer">
+      <div class="dial-frame"></div>
+      <div class="drum-vp" id="drum-vp">
+        <div class="drum-stage" id="drum-stage"></div>
+      </div>
+    </div>
+    <div class="dial-hint">드래그하여 일정 탐색</div>
+  </div>
+
+  <!-- FIND MY BUTTON -->
+  <a class="findmy-btn" href="findmy://" onclick="return openFindMy(event)">
+    <div class="findmy-icon">📍</div>
+    <div class="findmy-body">
+      <div class="findmy-title">YJ 위치 확인</div>
+      <div class="findmy-sub">Find My 앱에서 현재 위치 열기</div>
+    </div>
+    <div class="findmy-arrow">›</div>
+  </a>
+
+</div>
 
 <script>
-/* ════════════════════════════
-   SCHEDULE DATA
-════════════════════════════ */
-const RAW = [
+/* ════════════════════════════════════════
+   📋 GOOGLE SHEETS 연동
+   ──────────────────────────────────────
+   시트 공유 설정: "링크가 있는 사람 누구나 볼 수 있음"
+   아래 SHEET_ID를 본인 시트 ID로 교체하세요.
+   (주소창의 /d/ 와 /edit 사이 긴 문자열)
+════════════════════════════════════════ */
+const SHEET_ID  = '1iTXe5zRar4RgFAixNB7L_G6KPjFOohuvFBOO5S02ZhI';
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=DB`;
+
+/* 오프라인/오류 시 사용할 기본 데이터 */
+const RAW_FALLBACK = [
   "7:20,셔틀 대기,월요일","7:30,등교(셔틀),월요일","8:40,1교시 시작,월요일","9:40,2교시,월요일","10:40,3교시,월요일","11:30,중식(급식),월요일","12:40,4교시,월요일","13:40,5교시,월요일","14:40,6교시,월요일","15:30,7교시,월요일","16:30,종례/청소,월요일","16:40,방과후학교,월요일","17:30,석식,월요일","18:00,야간자습,월요일","21:00,야간자습,월요일","22:00,귀가(셔틀),월요일",
   "7:20,셔틀 대기,화요일","7:30,등교(셔틀),화요일","8:40,1교시 시작,화요일","9:40,2교시,화요일","10:40,3교시,화요일","11:30,중식(급식),화요일","12:40,4교시,화요일","13:40,5교시,화요일","14:40,6교시,화요일","15:30,7교시,화요일","16:30,종례/청소,화요일","16:40,귀가(셔틀),화요일","17:30,집,화요일","18:00,수학(베스),화요일","21:00,수학(베스),화요일","22:00,귀가(도보),화요일",
   "7:20,셔틀 대기,수요일","7:30,등교(셔틀),수요일","8:40,1교시 시작,수요일","9:40,2교시,수요일","10:40,3교시,수요일","11:30,중식(급식),수요일","12:40,4교시,수요일","13:40,5교시,수요일","14:40,6교시 종료,수요일","15:30,귀가(엄마셔틀),수요일","16:30,집,수요일","16:40,집,수요일","17:30,집,수요일","18:00,영어(테스),수요일","21:00,귀가(도보),수요일","22:00,집,수요일",
@@ -351,251 +394,214 @@ const RAW = [
   "7:20,집,일요일","7:30,집,일요일","8:40,집,일요일","9:40,국어(배지희),일요일","13:40,귀가(버스),일요일","14:40,집,일요일","22:00,집,일요일"
 ];
 
+/* 현재 로드된 데이터 (시트 또는 fallback) */
+let RAW = RAW_FALLBACK.slice();
+
+/* CSV 파싱: "시간,활동,요일" 한 줄씩 */
+function parseCSV(text) {
+  return text.trim().split('\n')
+    .slice(1) // 헤더 행 건너뜀
+    .map(line => {
+      // Google Sheets CSV는 값이 "따옴표"로 감싸질 수 있음
+      const cols = line.split(',').map(c => c.replace(/^"|"$/g, '').trim());
+      if (cols.length >= 3 && cols[0] && cols[1] && cols[2]) {
+        return `${cols[0]},${cols[1]},${cols[2]}`;
+      }
+      return null;
+    })
+    .filter(Boolean);
+}
+
+/* Google Sheets에서 최신 데이터 로드 */
+async function loadSheetData() {
+  if (SHEET_ID === 'YOUR_SHEET_ID_HERE') return; // ID 미설정 시 스킵
+  try {
+    const res  = await fetch(SHEET_URL + '&t=' + Date.now()); // 캐시 방지
+    const text = await res.text();
+    const parsed = parseCSV(text);
+    if (parsed.length > 0) {
+      RAW = parsed;
+      updateSched(); // 새 데이터로 화면 즉시 갱신
+    }
+  } catch (e) {
+    console.warn('시트 로드 실패, 기본 데이터 사용:', e);
+  }
+}
 const DAYS  = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
 const DAY_S = ['일','월','화','수','목','금','토'];
-
-function pad(n) { return String(n).padStart(2,'0'); }
-function toMin(t) { const [h,m]=t.split(':').map(Number); return h*60+m; }
-
-function actIcon(name) {
-  if (!name) return '💤';
-  if (name.includes('셔틀') || name.includes('등교') || name.includes('귀가')) return '🚌';
-  if (name.includes('교시')) return '📚';
-  if (name.includes('중식') || name.includes('석식')) return '🍱';
-  if (name.includes('청소') || name.includes('종례')) return '🧹';
-  if (name.includes('방과후')) return '📖';
-  if (name.includes('자습')) return '🌙';
-  if (name.includes('수학')) return '🔢';
-  if (name.includes('영어')) return '🌍';
-  if (name.includes('국어')) return '📝';
-  if (name.includes('집')) return '🏠';
+function pad(n){ return String(n).padStart(2,'0'); }
+function toMin(t){ const [h,m]=t.split(':').map(Number); return h*60+m; }
+function actIcon(n){
+  if(!n) return '💤';
+  if(n.includes('셔틀')||n.includes('등교')||n.includes('귀가')) return '🚌';
+  if(n.includes('교시')) return '📚';
+  if(n.includes('중식')||n.includes('석식')) return '🍱';
+  if(n.includes('청소')||n.includes('종례')) return '🧹';
+  if(n.includes('방과후')) return '📖';
+  if(n.includes('자습')) return '🌙';
+  if(n.includes('수학')) return '🔢';
+  if(n.includes('영어')) return '🌍';
+  if(n.includes('국어')) return '📝';
+  if(n.includes('집')) return '🏠';
   return '📌';
 }
 
+/* ════════ DRUM  ════════
+   STEP=38°, R=105px, item width=115px
+   인접 아이템 투영 중심 간격 ≈ 2×105×sin(38°) ≈ 129px
+   체감 폭 ≈ 115×cos(38°) ≈ 91px  → 겹침 없음 ✓
+════════ */
+const STEP = 76;  // 2배 간격
+const R    = 95;
 
-/* ════════════════════════════
-   3-D DRUM LOGIC
-   Items sit on a cylinder around the Y-axis.
-   Drum stage rotates to bring selected item to front.
-   - Item i placed at: rotateY(i × STEP°) translateZ(R px)
-   - Stage rotated at: rotateY(−selected × STEP°)
-   - Effective world angle of item i = (−sel × STEP) + (i × STEP)
-     → = (i − sel) × STEP  → 0 when i == sel  ✓
-════════════════════════════ */
-const STEP = 30;   // degrees between items
-const R    = 115;  // cylinder radius (px)
+let items   = [];
+let selIdx  = 0;
+let drumRot = 0;
+let drag    = false, dragX0 = 0, dragRot0 = 0;
 
-let items    = [];   // today's schedule
-let selIdx   = 0;   // index of item facing front
-let drumRot  = 0;   // current stage rotation (deg)
-let dragging = false;
-let dragX0   = 0;
-let dragRot0 = 0;
-
-/* Build all drum-item elements (called once per day-change) */
-function buildDrum() {
+function buildDrum(){
   const stage = document.getElementById('drum-stage');
   stage.innerHTML = '';
-
   items.forEach((item, i) => {
     const el = document.createElement('div');
     el.className = 'drum-item';
     el.innerHTML =
-      `<div class="di-icon">${actIcon(item.activity)}</div>` +
-      `<div class="di-name">${item.activity}</div>` +
+      `<div class="di-icon">${actIcon(item.activity)}</div>`+
+      `<div class="di-name">${item.activity}</div>`+
       `<div class="di-time">${item.time}</div>`;
-    // Fixed position on cylinder — never changes
-    el.style.transform = `rotateY(${i * STEP}deg) translateZ(${R}px)`;
+    el.style.transform = `rotateY(${i*STEP}deg) translateZ(${R}px)`;
     stage.appendChild(el);
   });
-
-  applyDrumVis();
+  applyVis();
 }
 
-/* Rotate the stage to a given angle, with optional smooth transition */
-function rotateTo(deg, snap) {
-  const stage = document.getElementById('drum-stage');
-  stage.style.transition = snap ? 'transform .32s cubic-bezier(.25,.8,.25,1)' : 'none';
-  stage.style.transform  = `rotateY(${deg}deg)`;
+function rotateTo(deg, snap){
+  const s = document.getElementById('drum-stage');
+  s.style.transition = snap ? 'transform .32s cubic-bezier(.25,.8,.25,1)' : 'none';
+  s.style.transform  = `rotateY(${deg}deg)`;
   drumRot = deg;
-  applyDrumVis();
+  applyVis();
 }
 
-/* Update opacity / color of each item based on world-space angle */
-function applyDrumVis() {
-  document.querySelectorAll('.drum-item').forEach((el, i) => {
-    // World Y-angle of this item
-    const world = drumRot + i * STEP;
-    // Normalise to −180 … +180
-    const norm  = ((world % 360) + 540) % 360 - 180;
-    const abs   = Math.abs(norm);
-
-    // Fade out items beyond ±82°
-    el.style.opacity = abs > 82
-      ? '0'
-      : String(+(1 - (abs / 82) * 0.82).toFixed(3));
-
+function applyVis(){
+  document.querySelectorAll('.drum-item').forEach((el,i)=>{
+    const w = drumRot + i*STEP;
+    const n = ((w%360)+540)%360-180;
+    const a = Math.abs(n);
+    // 76° 인접 아이템이 살짝 보이도록 fade 범위 확장
+    el.style.opacity = a > 100 ? '0' : String(+(1-(a/100)*.88).toFixed(3));
     const dn = el.querySelector('.di-name');
-    if (dn) {
-      if (abs < 10) {
-        dn.style.color = '#818cf8';
-        dn.style.fontWeight = '700';
-      } else {
-        dn.style.color = 'rgba(255,255,255,.78)';
-        dn.style.fontWeight = '500';
-      }
+    if(dn){
+      dn.style.color      = a<10 ? '#818cf8' : 'rgba(255,255,255,.8)';
+      dn.style.fontWeight = a<10 ? '700' : '500';
     }
   });
 }
 
-/* Snap to the nearest item after drag ends */
-function snapNearest() {
-  const nearest = Math.round(-drumRot / STEP);
-  selIdx = Math.max(0, Math.min(items.length - 1, nearest));
-  rotateTo(-selIdx * STEP, true);
+function snapNearest(){
+  const n = Math.round(-drumRot/STEP);
+  selIdx = Math.max(0, Math.min(items.length-1, n));
+  rotateTo(-selIdx*STEP, true);
 }
 
-/* ── Touch / Mouse handlers ── */
 const vp = document.getElementById('drum-vp');
-
-vp.addEventListener('touchstart', e => {
-  dragging = true;
-  dragX0   = e.touches[0].clientX;
-  dragRot0 = drumRot;
-}, { passive: true });
-
-vp.addEventListener('touchmove', e => {
-  if (!dragging) return;
-  e.preventDefault();
-  const dx  = e.touches[0].clientX - dragX0;
-  const min = -(items.length - 1) * STEP;
-  rotateTo(Math.max(min, Math.min(0, dragRot0 + dx * 0.5)), false);
-}, { passive: false });
-
-vp.addEventListener('touchend', () => { if (dragging) { dragging = false; snapNearest(); } });
-
-vp.addEventListener('mousedown', e => {
-  dragging = true;
-  dragX0   = e.clientX;
-  dragRot0 = drumRot;
+vp.addEventListener('touchstart', e=>{ drag=true; dragX0=e.touches[0].clientX; dragRot0=drumRot; },{passive:true});
+vp.addEventListener('touchmove',  e=>{ if(!drag)return; e.preventDefault();
+  const mn=-(items.length-1)*STEP;
+  rotateTo(Math.max(mn,Math.min(0, dragRot0+(e.touches[0].clientX-dragX0)*.5)),false);
+},{passive:false});
+vp.addEventListener('touchend', ()=>{ if(drag){drag=false;snapNearest();} });
+vp.addEventListener('mousedown', e=>{ drag=true; dragX0=e.clientX; dragRot0=drumRot; });
+window.addEventListener('mousemove', e=>{ if(!drag)return;
+  const mn=-(items.length-1)*STEP;
+  rotateTo(Math.max(mn,Math.min(0, dragRot0+(e.clientX-dragX0)*.5)),false);
 });
-window.addEventListener('mousemove', e => {
-  if (!dragging) return;
-  const dx  = e.clientX - dragX0;
-  const min = -(items.length - 1) * STEP;
-  rotateTo(Math.max(min, Math.min(0, dragRot0 + dx * 0.5)), false);
-});
-window.addEventListener('mouseup', () => { if (dragging) { dragging = false; snapNearest(); } });
+window.addEventListener('mouseup', ()=>{ if(drag){drag=false;snapNearest();} });
 
-
-/* ════════════════════════════
-   SCHEDULE UPDATE
-════════════════════════════ */
-function updateSchedule() {
+/* ════════ SCHEDULE ════════ */
+function updateSched(){
   const now    = new Date();
   const dayName = DAYS[now.getDay()];
-  const nowMin  = now.getHours() * 60 + now.getMinutes();
-
-  const fresh = RAW
-    .filter(r => r.endsWith(dayName))
-    .map(r => { const [t, a] = r.split(','); return { time: t, activity: a, min: toMin(t) }; });
-
-  // Rebuild drum only when items list changes (day change)
-  const rebuild = fresh.length !== items.length ||
-    fresh.some((it, i) => items[i] && it.activity !== items[i].activity);
+  const nowMin  = now.getHours()*60+now.getMinutes();
+  const fresh = RAW.filter(r=>r.endsWith(dayName)).map(r=>{
+    const [t,a]=r.split(','); return{time:t,activity:a,min:toMin(t)};
+  });
+  const rebuild = fresh.length!==items.length ||
+    fresh.some((it,i)=>items[i]&&it.activity!==items[i].activity);
   items = fresh;
 
-  // Find current index
-  let ci = -1;
-  for (let i = 0; i < items.length; i++) if (nowMin >= items[i].min) ci = i;
+  let ci=-1;
+  for(let i=0;i<items.length;i++) if(nowMin>=items[i].min) ci=i;
+  const curr = ci>=0 ? items[ci] : null;
+  const next = ci<items.length-1 ? items[ci+1] : null;
 
-  const curr = ci >= 0                  ? items[ci]     : null;
-  const next = ci < items.length - 1   ? items[ci + 1] : null;
-
-  /* Hero */
   document.getElementById('curr-icon').textContent  = actIcon(curr?.activity);
   document.getElementById('curr-name').textContent  = curr ? curr.activity : '일정 없음';
-  document.getElementById('curr-since').textContent = curr ? curr.time + ' 시작' : '--:--';
+  document.getElementById('curr-since').textContent = curr ? curr.time+' 시작' : '--:--';
 
-  /* Hero progress bar */
-  let pct = 0;
-  if (curr && next) {
-    const tot = next.min - curr.min;
-    if (tot > 0) pct = Math.min(100, Math.round((nowMin - curr.min) / tot * 100));
-  }
-  document.getElementById('hp-from').textContent  = curr ? curr.time : '-';
-  document.getElementById('hp-to').textContent    = next ? '▶ ' + next.time : '-';
-  document.getElementById('hp-pct').textContent   = pct + '%';
-  document.getElementById('hp-fill').style.width  = pct + '%';
+  let pct=0;
+  if(curr&&next){ const tot=next.min-curr.min; if(tot>0) pct=Math.min(100,Math.round((nowMin-curr.min)/tot*100)); }
+  document.getElementById('hp-from').textContent = curr?curr.time:'-';
+  document.getElementById('hp-to').textContent   = next?'▶ '+next.time:'-';
+  document.getElementById('hp-pct').textContent  = pct+'%';
+  document.getElementById('hp-fill').style.width = pct+'%';
 
-  /* Drum — center on current item if not being dragged */
-  if (rebuild) {
-    selIdx  = Math.max(0, ci);
-    drumRot = -selIdx * STEP;
-    buildDrum();
-  } else if (!dragging) {
-    selIdx  = Math.max(0, ci);
-    rotateTo(-selIdx * STEP, true);
-  }
+  if(rebuild){ selIdx=Math.max(0,ci); drumRot=-selIdx*STEP; buildDrum(); }
+  else if(!drag){ selIdx=Math.max(0,ci); rotateTo(-selIdx*STEP,true); }
 }
 
-
-/* ════════════════════════════
-   CLOCK
-════════════════════════════ */
-function updateClock() {
-  const now = new Date();
-  document.getElementById('hh').textContent       = pad(now.getHours());
-  document.getElementById('mm').textContent       = pad(now.getMinutes());
-  document.getElementById('ss').textContent       = pad(now.getSeconds());
-  document.getElementById('date-str').textContent =
-    `${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())}`;
-  document.getElementById('day-chip').textContent = DAY_S[now.getDay()] + '요일';
+/* ════════ CLOCK ════════ */
+function updateClock(){
+  const now=new Date();
+  document.getElementById('hh').textContent      = pad(now.getHours());
+  document.getElementById('mm').textContent      = pad(now.getMinutes());
+  document.getElementById('ss').textContent      = pad(now.getSeconds());
+  document.getElementById('date-str').textContent = `${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())}`;
+  document.getElementById('day-chip').textContent = DAY_S[now.getDay()]+'요일';
 }
 
-
-/* ════════════════════════════
-   WEATHER  (성남시 분당구)
-════════════════════════════ */
-const W_ICONS = ['☀️','🌤️','⛅','☁️','🌫️','🌦️','🌧️','❄️','🌨️','⛈️'];
-const W_DESCS = ['맑음','대체로 맑음','구름 조금','흐림','안개','이슬비','비','눈','눈 소나기','뇌우'];
-
-function wIdx(c) {
-  if (c===0) return 0; if (c<=2) return 1; if (c===3) return 3;
-  if (c<=49) return 4; if (c<=57) return 5; if (c<=65) return 6;
-  if (c<=77) return 7; if (c<=86) return 8; return 9;
-}
-
-async function fetchWeather() {
-  try {
-    const d = await (await fetch(
-      'https://api.open-meteo.com/v1/forecast' +
-      '?latitude=37.3595&longitude=127.1052' +
-      '&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code' +
+/* ════════ WEATHER ════════ */
+const WI = ['☀️','🌤️','⛅','☁️','🌫️','🌦️','🌧️','❄️','🌨️','⛈️'];
+const WD = ['맑음','대체로 맑음','구름 조금','흐림','안개','이슬비','비','눈','눈 소나기','뇌우'];
+function wi(c){ return c===0?0:c<=2?1:c===3?3:c<=49?4:c<=57?5:c<=65?6:c<=77?7:c<=86?8:9; }
+async function fetchWeather(){
+  try{
+    const d=await(await fetch(
+      'https://api.open-meteo.com/v1/forecast?latitude=37.3595&longitude=127.1052'+
+      '&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code'+
       '&timezone=Asia%2FSeoul'
-    )).json();
-    const c = d.current, wi = wIdx(c.weather_code);
-    document.getElementById('wb-icon').textContent  = W_ICONS[wi];
-    document.getElementById('wb-temp').textContent  = Math.round(c.temperature_2m) + '°';
-    document.getElementById('wb-desc').textContent  = W_DESCS[wi];
-    document.getElementById('wb-feels').textContent = Math.round(c.apparent_temperature) + '°';
-    document.getElementById('wb-humid').textContent = c.relative_humidity_2m + '%';
-  } catch {
-    document.getElementById('wb-desc').textContent = '날씨 정보 없음';
-  }
+    )).json(), c=d.current, x=wi(c.weather_code);
+    document.getElementById('wb-icon').textContent  = WI[x];
+    document.getElementById('wb-temp').textContent  = Math.round(c.temperature_2m)+'°';
+    document.getElementById('wb-desc').textContent  = WD[x];
+    document.getElementById('wb-feels').textContent = Math.round(c.apparent_temperature)+'°';
+    document.getElementById('wb-humid').textContent = c.relative_humidity_2m+'%';
+  }catch{ document.getElementById('wb-desc').textContent='날씨 정보 없음'; }
 }
 
+/* ════════ FIND MY ════════ */
+function openFindMy(e) {
+  e.preventDefault();
+  // findmy:// 딥링크 → Find My 앱 실행
+  window.location.href = 'findmy://';
+  // iOS가 아닌 환경(Mac 브라우저 등)에서는 App Store 안내
+  setTimeout(() => {
+    const ua = navigator.userAgent;
+    if (!/iPhone|iPad|iPod/.test(ua)) {
+      alert('이 기능은 아이폰에서만 작동해요.\nFind My 앱이 자동으로 열립니다.');
+    }
+  }, 800);
+  return false;
+}
 
-/* ════════════════════════════
-   INIT
-════════════════════════════ */
-updateClock();
-updateSchedule();
-fetchWeather();
+/* ════════ INIT ════════ */
+updateClock(); updateSched(); fetchWeather();
+loadSheetData(); // 앱 시작 시 시트에서 최신 데이터 로드
 
 setInterval(updateClock,    1000);
-setInterval(updateSchedule, 10000);
-setInterval(fetchWeather,   600000);
+setInterval(updateSched,   10000);
+setInterval(fetchWeather,  600000);
+setInterval(loadSheetData, 1800000); // 30분마다 시트 재동기화
 </script>
 </body>
 </html>
