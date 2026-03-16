@@ -3,121 +3,111 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>YJ NOW - Live Sync</title>
+  <title>YJ NOW</title>
   <style>
+    *, *::before, *::after {
+      box-sizing: border-box; margin: 0; padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
     :root {
       --bg: #000;
-      --surf: rgba(255, 255, 255, 0.05);
-      --bord: rgba(255, 255, 255, 0.1);
+      --surf: rgba(255,255,255,0.06);
+      --bord: rgba(255,255,255,0.12);
       --acc: #6366f1;
       --text: #fff;
-      --muted: rgba(255, 255, 255, 0.4);
+      --muted: rgba(255,255,255,0.4);
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      height: 100vh; background: var(--bg); color: var(--text);
+      height: 100vh; background: var(--bg);
       font-family: -apple-system, "SF Pro Display", sans-serif;
-      display: flex; flex-direction: column; align-items: center; justify-content: space-between;
-      overflow: hidden; padding: 40px 20px;
+      color: var(--text); overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
 
-    /* 상단: 요일, 날씨, 시간 */
-    .header { text-align: center; }
-    .day-name { font-size: 2.4rem; font-weight: 800; letter-spacing: -1px; }
-    .weather-bar { font-size: 1rem; color: var(--muted); margin-top: 8px; display: flex; gap: 10px; justify-content: center; }
-    .clock { font-size: 1.4rem; font-weight: 600; color: var(--acc); margin-top: 15px; }
+    /* 날씨 및 시간 상단 섹션 */
+    .top-bar {
+      position: absolute; top: 40px; text-align: center; width: 100%;
+    }
+    .top-bar h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; }
+    .weather { color: var(--muted); font-size: 1rem; margin-top: 5px; }
 
-    /* 중간: 드럼 뷰포트 */
+    /* 드럼 컨테이너: 시야를 더 넓게 확보 */
     .drum-viewport {
-      perspective: 1500px; width: 100%; height: 350px;
+      perspective: 1200px; /* 원근감 완화 */
+      width: 100%; height: 300px;
       display: flex; align-items: center; justify-content: center;
     }
-    .drum-stage {
-      width: 220px; height: 120px; transform-style: preserve-3d;
-      position: relative; transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-    .drum-item {
-      position: absolute; width: 220px; height: 120px;
-      background: var(--surf); border: 1px solid var(--bord);
-      border-radius: 24px; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; padding: 20px;
-      backface-visibility: hidden; transition: opacity 0.5s, transform 0.5s;
-    }
-    .di-label { font-size: 0.75rem; color: var(--muted); font-weight: bold; margin-bottom: 5px; text-transform: uppercase; }
-    .di-name { font-size: 1.2rem; font-weight: 700; text-align: center; line-height: 1.3; }
-    .di-time { font-size: 0.9rem; color: var(--acc); font-weight: 600; margin-top: 8px; }
 
-    /* 하단: 안내 및 상태 */
-    .footer { font-size: 0.8rem; color: var(--muted); letter-spacing: 1px; font-weight: 500; }
-    .loading-overlay { 
-      position: fixed; inset: 0; background: #000; z-index: 100; 
-      display: flex; align-items: center; justify-content: center; color: var(--acc); 
+    .drum-stage {
+      width: 200px; height: 100px;
+      transform-style: preserve-3d;
+      position: relative;
+      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .drum-item {
+      position: absolute; width: 200px; height: 100px;
+      background: var(--surf); border: 1px solid var(--bord);
+      border-radius: 20px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      backface-visibility: hidden;
+    }
+
+    .di-icon { font-size: 2rem; margin-bottom: 8px; }
+    .di-name { font-size: 1.2rem; font-weight: 700; }
+    .di-time { font-size: 0.9rem; color: var(--acc); font-weight: 600; margin-top: 4px; }
+
+    /* 현재 상태 강조 안내 */
+    .now-indicator {
+      position: absolute; bottom: 80px; color: var(--acc);
+      font-weight: bold; font-size: 0.9rem; letter-spacing: 2px;
     }
   </style>
 </head>
 <body>
 
-<div id="loader" class="loading-overlay">SYNCING WITH SHEET...</div>
-
-<div class="header">
-  <div class="day-name" id="display-day">...</div>
-  <div class="weather-bar">
-    <span id="display-date">00.00</span>
-    <span>•</span>
-    <span id="display-weather">분당구 날씨 로딩중</span>
-  </div>
-  <div class="clock" id="display-clock">00:00</div>
+<div class="top-bar">
+  <h1 id="display-day">월요일</h1>
+  <div class="weather" id="display-date">2026년 3월 16일</div>
 </div>
 
 <div class="drum-viewport">
   <div id="drum-stage" class="drum-stage"></div>
 </div>
 
-<div class="footer">ERIKSEN ADVISOR SYSTEM</div>
+<div class="now-indicator">CURRENT SCHEDULE</div>
 
 <script>
-  // 1. 구글 시트 CSV 링크 (교수님이 주신 링크 기반)
-  const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQX-bTLDRN9fFJgLE1ZckHbhugyEDC2tGFxECCiaVFwZhbrg6Hn28CgdBpT_rNdPLPy2HrJudRR5CzL/pub?gid=639104849&single=true&output=csv";
+  // 교수님의 113줄 데이터를 기반으로 한 예시 데이터
+  const rawData = [
+    { time: "07:20", activity: "셔틀 대기", day: "월요일" },
+    { time: "07:30", activity: "등교(셔틀)", day: "월요일" },
+    { time: "08:40", activity: "1교시 시작", day: "월요일" },
+    { time: "09:40", activity: "2교시", day: "월요일" },
+    { time: "10:40", activity: "3교시", day: "월요일" },
+    { time: "11:30", activity: "중식(급식)", day: "월요일" },
+    { time: "12:40", activity: "4교시", day: "월요일" },
+    { time: "13:40", activity: "5교시", day: "월요일" }
+  ];
 
-  // 2. 드럼 설정 (와이드 배치)
-  const STEP = 95;  // 각도를 더 넓혀서 겹침 완전 방지
-  const R = 280;    // 반지름을 키워 회전 반경을 시원하게
+  /* 🛠️ 핵심 수정 수치 */
+  const STEP = 90;  // 각도를 90도로 벌려 정면 외에는 완전히 측면으로 배치
+  const R    = 250; // 반지름을 250으로 키워 공간을 아주 넓게 사용
+
   let items = [];
   let drumRot = 0;
 
-  async function init() {
-    await fetchWeather();
-    await loadSheetData();
-    setInterval(updateTimeOnly, 10000); // 10초마다 시계 및 일정 동기화
-    updateTimeOnly();
-  }
+  function init() {
+    const now = new Date();
+    const days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+    const today = days[now.getDay()];
+    
+    document.getElementById('display-day').textContent = today;
+    document.getElementById('display-date').textContent = now.toLocaleDateString();
 
-  async function loadSheetData() {
-    try {
-      const res = await fetch(SHEET_CSV_URL);
-      const csv = await res.text();
-      const rows = csv.split('\n').map(row => row.split(','));
-      
-      // 시트 구조: [시간, 활동명, 요일] 가정
-      const allData = rows.slice(1).map(r => ({
-        time: r[0]?.trim(),
-        activity: r[1]?.trim(),
-        day: r[2]?.trim()
-      })).filter(d => d.time && d.activity);
-
-      const days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
-      const todayName = days[new Date().getDay()];
-      items = allData.filter(d => d.day === todayName);
-
-      if (items.length > 0) {
-        buildDrum();
-        document.getElementById('loader').style.display = 'none';
-      } else {
-        document.getElementById('loader').textContent = "오늘 일정이 없습니다.";
-      }
-    } catch (e) {
-      document.getElementById('loader').textContent = "데이터 연동 오류";
-    }
+    items = rawData.filter(d => d.day === today);
+    buildDrum();
+    scrollToCurrent();
   }
 
   function buildDrum() {
@@ -127,74 +117,49 @@
       const el = document.createElement('div');
       el.className = 'drum-item';
       el.innerHTML = `
-        <div class="di-label">Schedule Item</div>
+        <div class="di-icon">📅</div>
         <div class="di-name">${item.activity}</div>
         <div class="di-time">${item.time}</div>
       `;
+      // 3D 배치: 회전각 i*STEP, 중심축에서의 거리 R
       el.style.transform = `rotateY(${i * STEP}deg) translateZ(${R}px)`;
       stage.appendChild(el);
     });
-    scrollToCurrent();
-  }
-
-  function updateTimeOnly() {
-    const now = new Date();
-    const days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
-    document.getElementById('display-day').textContent = days[now.getDay()];
-    document.getElementById('display-date').textContent = (now.getMonth()+1) + "월 " + now.getDate() + "일";
-    document.getElementById('display-clock').textContent = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-    
-    if (items.length > 0) scrollToCurrent();
   }
 
   function scrollToCurrent() {
     const now = new Date();
     const curMin = now.getHours() * 60 + now.getMinutes();
+    
     let targetIdx = 0;
-
     items.forEach((item, i) => {
       const [h, m] = item.time.split(':').map(Number);
       if (curMin >= h * 60 + m) targetIdx = i;
     });
 
     drumRot = -targetIdx * STEP;
-    document.getElementById('drum-stage').style.transform = `rotateY(${drumRot}deg)`;
-    
-    // 가시성 및 강조 처리 (직전/현재/다음)
+    const stage = document.getElementById('drum-stage');
+    stage.style.transform = `rotateY(${drumRot}deg)`;
+    applyVis();
+  }
+
+  function applyVis() {
     document.querySelectorAll('.drum-item').forEach((el, i) => {
       const angle = (drumRot + i * STEP) % 360;
       const normAngle = Math.abs(((angle + 180) % 360) - 180);
       
-      if (normAngle < 20) { // 현재
+      // 정면(0도 근처)만 선명하게, 나머지는 투명하게 처리하여 겹침 방지
+      if (normAngle < 20) {
         el.style.opacity = "1";
-        el.style.filter = "blur(0)";
-        el.style.transform = `rotateY(${i * STEP}deg) translateZ(${R}px) scale(1.15)`;
-        el.querySelector('.di-label').textContent = "Current Task";
-      } else if (normAngle < STEP + 20) { // 이전 또는 다음
-        el.style.opacity = "0.2";
-        el.style.filter = "blur(1px)";
-        el.style.transform = `rotateY(${i * STEP}deg) translateZ(${R}px) scale(0.9)`;
-        el.querySelector('.di-label').textContent = (i < -drumRot/STEP) ? "Previous" : "Upcoming";
+        el.style.transform = `rotateY(${i * STEP}deg) translateZ(${R}px) scale(1.1)`;
       } else {
-        el.style.opacity = "0";
+        el.style.opacity = "0.1";
+        el.style.transform = `rotateY(${i * STEP}deg) translateZ(${R}px) scale(0.9)`;
       }
     });
   }
 
-  async function fetchWeather() {
-    try {
-      // 분당구(성남) 위경도 기준 Open-Meteo API
-      const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=37.3595&longitude=127.1052&current=temperature_2m,weather_code&timezone=Asia%2FSeoul");
-      const data = await res.json();
-      const temp = Math.round(data.current.temperature_2m);
-      document.getElementById('display-weather').textContent = `분당구 ${temp}°C`;
-    } catch (e) {
-      document.getElementById('display-weather').textContent = "날씨 정보 수신 불가";
-    }
-  }
-
   window.onload = init;
 </script>
-
 </body>
 </html>
