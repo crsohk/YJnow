@@ -4,6 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>YJ NOW</title>
+
+  <!-- ── PWA / 홈 화면 추가 ── -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="YJ NOW">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#000000">
+
+  <!-- 아이콘 SVG (인라인 base64) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%230d0d18'/%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='25%25' r='65%25'%3E%3Cstop offset='0%25' stop-color='%236366f1' stop-opacity='0.45'/%3E%3Cstop offset='100%25' stop-color='%230d0d18' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='112' fill='url(%23g)'/%3E%3Ccircle cx='256' cy='96' r='18' fill='%236366f1' opacity='0.9'/%3E%3Ctext x='256' y='320' text-anchor='middle' font-family='SF Pro Display%2C -apple-system%2C sans-serif' font-weight='900' font-size='210' fill='white' letter-spacing='-6'%3EYJ%3C/text%3E%3Ctext x='256' y='410' text-anchor='middle' font-family='SF Pro Display%2C -apple-system%2C sans-serif' font-weight='700' font-size='82' fill='%23818cf8' letter-spacing='22'%3ENOW%3C/text%3E%3C/svg%3E">
+
+  <!-- iOS 홈 화면 아이콘 (apple-touch-icon) -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%230d0d18'/%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='25%25' r='65%25'%3E%3Cstop offset='0%25' stop-color='%236366f1' stop-opacity='0.45'/%3E%3Cstop offset='100%25' stop-color='%230d0d18' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='512' height='512' fill='url(%23g)'/%3E%3Ccircle cx='256' cy='96' r='18' fill='%236366f1' opacity='0.9'/%3E%3Ctext x='256' y='320' text-anchor='middle' font-family='SF Pro Display%2C -apple-system%2C sans-serif' font-weight='900' font-size='210' fill='white' letter-spacing='-6'%3EYJ%3C/text%3E%3Ctext x='256' y='410' text-anchor='middle' font-family='SF Pro Display%2C -apple-system%2C sans-serif' font-weight='700' font-size='82' fill='%23818cf8' letter-spacing='22'%3ENOW%3C/text%3E%3C/svg%3E">
   <style>
     *, *::before, *::after {
       box-sizing: border-box; margin: 0; padding: 0;
@@ -128,10 +141,10 @@
     }
     .wb-top { display: flex; align-items: center; gap: 6px; }
     .wb-icon { font-size: 20px; line-height: 1; }
-    .wb-temp { font-size: 20px; font-weight: 200; font-variant-numeric: tabular-nums; }
-    .wb-desc { font-size: 11px; color: var(--sec); }
-    .wb-sub  { font-size: 10px; color: var(--muted); }
-    .wb-rain { font-size: 10px; color: #60a5fa; margin-top: 1px; }
+    .wb-temp { font-size: 22px; font-weight: 300; font-variant-numeric: tabular-nums; }
+    .wb-desc { font-size: 12px; font-weight: 600; color: var(--sec); }
+    .wb-sub  { font-size: 11px; font-weight: 500; color: rgba(255,255,255,.55); }
+    .wb-rain { font-size: 11px; font-weight: 600; color: #60a5fa; margin-top: 1px; }
     /* 구분선 */
     .wbb-div {
       width: 1px; background: var(--bord); margin: 8px 0;
@@ -146,15 +159,15 @@
       margin-bottom: 4px;
     }
     .bio-title {
-      font-size: 9px; font-weight: 700;
+      font-size: 10px; font-weight: 700;
       letter-spacing: .08em; text-transform: uppercase;
-      color: rgba(129,140,248,.8);
+      color: rgba(129,140,248,.9);
     }
-    .bio-msg { font-size: 9px; color: var(--muted); }
-    .bio-rows { display: flex; flex-direction: column; gap: 3px; }
+    .bio-msg { font-size: 10px; font-weight: 600; color: rgba(255,255,255,.55); }
+    .bio-rows { display: flex; flex-direction: column; gap: 4px; }
     .bio-row  { display: flex; align-items: center; gap: 5px; }
     .bio-label {
-      width: 22px; font-size: 9px; color: var(--muted);
+      width: 24px; font-size: 10px; font-weight: 600; color: rgba(255,255,255,.55);
       flex-shrink: 0; text-align: right;
     }
     .bio-track {
@@ -175,7 +188,7 @@
       transition: width .6s, left .6s;
     }
     .bio-val {
-      width: 30px; font-size: 9px; font-weight: 600;
+      width: 34px; font-size: 10px; font-weight: 700;
       font-variant-numeric: tabular-nums; flex-shrink: 0;
     }
 
@@ -195,9 +208,9 @@
       display: flex; align-items: flex-start; gap: 8px;
     }
     .fq-badge {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: .08em;
-      border-radius: 100px; padding: 2px 7px;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .05em;
+      border-radius: 100px; padding: 3px 9px;
       flex-shrink: 0; margin-top: 1px;
     }
     .fq-badge.horoscope {
@@ -209,7 +222,7 @@
       color: rgba(129,140,248,.9);
     }
     .fq-text {
-      font-size: 11px; color: rgba(255,255,255,.72);
+      font-size: 12px; font-weight: 500; color: rgba(255,255,255,.85);
       line-height: 1.5; word-break: keep-all; flex: 1;
     }
     .fq-divider {
@@ -244,9 +257,9 @@
       border-color: rgba(48,209,88,.35);
     }
     .dday-icon { font-size: 13px; line-height: 1; }
-    .dday-name { font-size: 11px; color: rgba(255,255,255,.7); font-weight: 500; }
+    .dday-name { font-size: 13px; color: rgba(255,255,255,.85); font-weight: 600; }
     .dday-num  {
-      font-size: 11px; font-weight: 800;
+      font-size: 13px; font-weight: 800;
       font-variant-numeric: tabular-nums;
       color: var(--a2);
     }
@@ -264,9 +277,9 @@
     }
     .sched-heading {
       flex-shrink: 0;
-      font-size: 10px; font-weight: 600;
+      font-size: 11px; font-weight: 700;
       letter-spacing: .15em; text-transform: uppercase;
-      color: rgba(255,255,255,.25);
+      color: rgba(255,255,255,.35);
       margin-bottom: 7px;
       text-align: center;
     }
@@ -306,9 +319,9 @@
     }
 
     .si-time {
-      font-size: 11px; color: var(--muted);
+      font-size: 12px; font-weight: 500; color: rgba(255,255,255,.55);
       font-variant-numeric: tabular-nums;
-      min-width: 34px; text-align: right;
+      min-width: 36px; text-align: right;
       flex-shrink: 0;
     }
     .sched-item.active .si-time {
@@ -329,11 +342,11 @@
       background: rgba(255,255,255,.25);
     }
 
-    .si-icon { font-size: 15px; flex-shrink: 0; }
+    .si-icon { font-size: 16px; flex-shrink: 0; }
 
     .si-name {
-      font-size: 13px; font-weight: 500;
-      color: rgba(255,255,255,.75);
+      font-size: 14px; font-weight: 600;
+      color: rgba(255,255,255,.82);
       flex: 1;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
@@ -531,10 +544,50 @@ const DAYS  = ['일요일','월요일','화요일','수요일','목요일','금�
 const DAY_S = ['일','월','화','수','목','금','토'];
 function pad(n){ return String(n).padStart(2,'0'); }
 function toMin(t){ const [h,m]=t.split(':').map(Number); return h*60+m; }
+
+/* ════════ 공휴일 ════════ */
+let holidayMap = {}; // { "2026-05-05": "어린이날", ... }
+
+async function loadHolidays() {
+  const year = new Date().getFullYear();
+  try {
+    const res  = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${year}/KR`,
+                             { signal: AbortSignal.timeout(5000) });
+    const data = await res.json();
+    data.forEach(h => { holidayMap[h.date] = h.localName || h.name; });
+  } catch {
+    // 실패 시 주요 공휴일 하드코딩 폴백
+    const y = year;
+    const hd = [
+      [`${y}-01-01`,'새해'],   [`${y}-03-01`,'삼일절'],
+      [`${y}-05-05`,'어린이날'],[`${y}-06-06`,'현충일'],
+      [`${y}-08-15`,'광복절'],  [`${y}-10-03`,'개천절'],
+      [`${y}-10-09`,'한글날'],  [`${y}-12-25`,'크리스마스'],
+    ];
+    hd.forEach(([d,n]) => { holidayMap[d] = n; });
+  }
+}
+
+function todayHoliday() {
+  const now = new Date();
+  const key = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+  return holidayMap[key] || null;
+}
+// 1~3교시 → 오전 수업 / 4~7교시 → 오후 수업
+function displayActivity(n) {
+  if (!n) return n;
+  const m = n.match(/^([1-7])교시/);
+  if (m) {
+    const num = parseInt(m[1]);
+    return num <= 3 ? '오전 수업' : '오후 수업';
+  }
+  return n;
+}
+
 function actIcon(n){
   if(!n) return '💤';
   if(n.includes('셔틀')||n.includes('등교')||n.includes('귀가')) return '🚌';
-  if(n.includes('교시')) return '📚';
+  if(n.includes('오전 수업')||n.includes('오후 수업')||n.includes('교시')) return '📚';
   if(n.includes('중식')||n.includes('석식')) return '🍱';
   if(n.includes('청소')||n.includes('종례')) return '🧹';
   if(n.includes('방과후')) return '📖';
@@ -566,11 +619,12 @@ function buildSchedList(currIdx) {
       el.classList.add('future');
     }
 
+    const dispName = displayActivity(item.activity);
     el.innerHTML =
       `<span class="si-time">${item.time}</span>` +
       `<span class="si-dot"></span>` +
-      `<span class="si-icon">${actIcon(item.activity)}</span>` +
-      `<span class="si-name">${item.activity}</span>` +
+      `<span class="si-icon">${actIcon(dispName)}</span>` +
+      `<span class="si-name">${dispName}</span>` +
       `<span class="si-now">NOW</span>`;
 
     list.appendChild(el);
@@ -622,6 +676,27 @@ function updateSched(){
   const now     = new Date();
   const dayName = DAYS[now.getDay()];
   const nowMin  = now.getHours()*60+now.getMinutes();
+
+  // 공휴일 체크
+  const holiday = todayHoliday();
+  if (holiday) {
+    document.getElementById('curr-icon').textContent  = '🎌';
+    document.getElementById('curr-name').textContent  = holiday;
+    document.getElementById('curr-since').textContent = '공휴일';
+    document.getElementById('hp-from').textContent    = '-';
+    document.getElementById('hp-to').textContent      = '-';
+    document.getElementById('hp-pct').textContent     = '-';
+    document.getElementById('hp-fill').style.width    = '0%';
+    // 일정 리스트에 공휴일 메시지
+    const list = document.getElementById('sched-list');
+    list.innerHTML = `
+      <div style="text-align:center; padding:28px 0; color:rgba(255,255,255,.3); font-size:13px;">
+        🎌 ${holiday}<br>
+        <span style="font-size:11px; margin-top:4px; display:block;">오늘은 학교 일정이 없어요</span>
+      </div>`;
+    items = [];
+    return;
+  }
   const fresh   = RAW.filter(r=>r.endsWith(dayName)).map(r=>{
     const [t,a]=r.split(','); return{time:t,activity:a,min:toMin(t)};
   });
@@ -636,8 +711,9 @@ function updateSched(){
   const next = ci<items.length-1 ? items[ci+1] : null;
 
   // Hero 업데이트
-  document.getElementById('curr-icon').textContent  = actIcon(curr?.activity);
-  document.getElementById('curr-name').textContent  = curr ? curr.activity : '일정 없음';
+  const currDisp = curr ? displayActivity(curr.activity) : null;
+  document.getElementById('curr-icon').textContent  = actIcon(currDisp);
+  document.getElementById('curr-name').textContent  = currDisp || '일정 없음';
   document.getElementById('curr-since').textContent = curr ? curr.time+' 시작' : '--:--';
 
   let pct=0;
@@ -914,11 +990,10 @@ function openFindMy(e) {
 }
 
 /* ════════ INIT ════════ */
-updateClock(); updateSched(); fetchWeather();
-calcBiorhythm();
-fetchHoroscope();
-loadDday();
-loadSheetData();
+updateClock(); fetchWeather();
+calcBiorhythm(); fetchHoroscope();
+loadDday(); loadSheetData();
+loadHolidays().then(() => updateSched()); // 공휴일 로드 후 일정 업데이트
 
 setInterval(updateClock,    1000);
 setInterval(updateSched,   10000);
