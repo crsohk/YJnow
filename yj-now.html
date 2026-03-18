@@ -100,12 +100,12 @@
       padding: 8px 28px 4px;
     }
     .hero-datetime {
-      font-size: 13px; font-weight: 500;
+      font-size: 16px; font-weight: 700;
       color: var(--muted); letter-spacing: .02em;
       margin-bottom: 6px; font-variant-numeric: tabular-nums;
     }
     .hero-datetime .hd-time {
-      color: var(--a2); font-weight: 700; font-size: 15px;
+      color: var(--a2); font-weight: 800; font-size: 19px;
     }
     .hero-emoji { font-size: 50px; line-height: 1; margin-bottom: 8px; }
     .hero-name {
@@ -140,11 +140,38 @@
       display: flex; flex-direction: column; justify-content: center; gap: 2px;
     }
     .wb-top { display: flex; align-items: center; gap: 6px; }
-    .wb-icon { font-size: 20px; line-height: 1; }
-    .wb-temp { font-size: 22px; font-weight: 300; font-variant-numeric: tabular-nums; }
-    .wb-desc { font-size: 12px; font-weight: 600; color: var(--sec); }
-    .wb-sub  { font-size: 11px; font-weight: 500; color: rgba(255,255,255,.55); }
-    .wb-rain { font-size: 11px; font-weight: 600; color: #60a5fa; margin-top: 1px; }
+    .wb-icon { font-size: 22px; line-height: 1; }
+    .wb-temp { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .wb-desc { font-size: 15px; font-weight: 700; color: var(--sec); }
+    .wb-sub  { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.55); }
+    .wb-rain { font-size: 13px; font-weight: 700; color: #60a5fa; margin-top: 1px; }
+
+    /* 강수 우산 예보 */
+    .rain-forecast {
+      flex-shrink: 0;
+      display: flex; justify-content: space-around; align-items: flex-end;
+      margin: 6px 20px 0;
+      background: var(--surf); border: 1px solid var(--bord);
+      border-radius: 16px;
+      padding: 10px 8px 8px;
+    }
+    .rain-slot {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      flex: 1;
+    }
+    .rain-umb { line-height: 1; }
+    .rain-pct {
+      font-size: 12px; font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+    .rain-pct.low  { color: rgba(255,255,255,.3); }
+    .rain-pct.mid  { color: #60a5fa; }
+    .rain-pct.high { color: #3b82f6; }
+    .rain-pct.heavy{ color: #f87171; }
+    .rain-label {
+      font-size: 11px; font-weight: 600; color: var(--muted);
+    }
+    .rain-divider { width:1px; background:var(--bord); height:44px; margin-bottom:18px; }
     /* 구분선 */
     .wbb-div {
       width: 1px; background: var(--bord); margin: 8px 0;
@@ -159,15 +186,15 @@
       margin-bottom: 4px;
     }
     .bio-title {
-      font-size: 10px; font-weight: 700;
+      font-size: 13px; font-weight: 700;
       letter-spacing: .08em; text-transform: uppercase;
       color: rgba(129,140,248,.9);
     }
-    .bio-msg { font-size: 10px; font-weight: 600; color: rgba(255,255,255,.55); }
+    .bio-msg { font-size: 12px; font-weight: 700; color: rgba(255,255,255,.65); }
     .bio-rows { display: flex; flex-direction: column; gap: 4px; }
     .bio-row  { display: flex; align-items: center; gap: 5px; }
     .bio-label {
-      width: 24px; font-size: 10px; font-weight: 600; color: rgba(255,255,255,.55);
+      width: 28px; font-size: 12px; font-weight: 700; color: rgba(255,255,255,.65);
       flex-shrink: 0; text-align: right;
     }
     .bio-track {
@@ -188,7 +215,7 @@
       transition: width .6s, left .6s;
     }
     .bio-val {
-      width: 34px; font-size: 10px; font-weight: 700;
+      width: 40px; font-size: 12px; font-weight: 800;
       font-variant-numeric: tabular-nums; flex-shrink: 0;
     }
 
@@ -208,7 +235,7 @@
       display: flex; align-items: flex-start; gap: 8px;
     }
     .fq-badge {
-      font-size: 11px; font-weight: 700;
+      font-size: 13px; font-weight: 700;
       letter-spacing: .05em;
       border-radius: 100px; padding: 3px 9px;
       flex-shrink: 0; margin-top: 1px;
@@ -222,7 +249,7 @@
       color: rgba(129,140,248,.9);
     }
     .fq-text {
-      font-size: 12px; font-weight: 500; color: rgba(255,255,255,.85);
+      font-size: 14px; font-weight: 700; color: rgba(255,255,255,.9);
       line-height: 1.5; word-break: keep-all; flex: 1;
     }
     .fq-divider {
@@ -284,13 +311,9 @@
       text-align: center;
     }
     .sched-scroll {
-      flex: 1;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      /* 스크롤바 숨김 */
-      scrollbar-width: none;
+      overflow: hidden;
+      max-height: 136px;
     }
-    .sched-scroll::-webkit-scrollbar { display: none; }
 
     .sched-list {
       display: flex; flex-direction: column; gap: 4px;
@@ -470,6 +493,11 @@
     </div>
   </div>
 
+  <!-- 강수 우산 예보 -->
+  <div class="rain-forecast" id="rain-forecast" style="display:none">
+    <!-- JS로 렌더링 -->
+  </div>
+
   <!-- D-DAY -->
   <div class="dday-bar" id="dday-bar"></div>
 
@@ -573,28 +601,30 @@ function todayHoliday() {
   const key = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
   return holidayMap[key] || null;
 }
-// 1~3교시 → 오전 수업 / 4~7교시 → 오후 수업
+// 교시 그룹핑 제거 — 시트에서 가져온 상세 이름 그대로 표시
 function displayActivity(n) {
-  if (!n) return n;
-  const m = n.match(/^([1-7])교시/);
-  if (m) {
-    const num = parseInt(m[1]);
-    return num <= 3 ? '오전 수업' : '오후 수업';
-  }
-  return n;
+  return n || '';
 }
 
 function actIcon(n){
   if(!n) return '💤';
   if(n.includes('셔틀')||n.includes('등교')||n.includes('귀가')) return '🚌';
-  if(n.includes('오전 수업')||n.includes('오후 수업')||n.includes('교시')) return '📚';
+  if(n.match(/[1-7]교시/)||n.includes('수업')||n.includes('종례')||n.includes('자습')) {
+    if(n.includes('자습')) return '🌙';
+    if(n.includes('종례')) return '🧹';
+    return '📚';
+  }
   if(n.includes('중식')||n.includes('석식')) return '🍱';
-  if(n.includes('청소')||n.includes('종례')) return '🧹';
+  if(n.includes('청소')) return '🧹';
   if(n.includes('방과후')) return '📖';
-  if(n.includes('자습')) return '🌙';
   if(n.includes('수학')) return '🔢';
   if(n.includes('영어')) return '🌍';
   if(n.includes('국어')) return '📝';
+  if(n.includes('과학')) return '🔬';
+  if(n.includes('사회')||n.includes('역사')) return '🗺️';
+  if(n.includes('체육')) return '⚽';
+  if(n.includes('음악')) return '🎵';
+  if(n.includes('미술')) return '🎨';
   if(n.includes('집')) return '🏠';
   return '📌';
 }
@@ -608,7 +638,13 @@ function buildSchedList(currIdx) {
   list.innerHTML = '';
   const nowMin = new Date().getHours()*60 + new Date().getMinutes();
 
-  items.forEach((item, i) => {
+  // 현재 포함 앞뒤 총 3개만 표시
+  let start = Math.max(0, currIdx - 1);
+  if (start + 3 > items.length) start = Math.max(0, items.length - 3);
+  const visible = items.slice(start, start + 3);
+
+  visible.forEach((item, vi) => {
+    const i = start + vi;
     const el = document.createElement('div');
     el.className = 'sched-item';
     el.dataset.idx = i;
@@ -629,9 +665,6 @@ function buildSchedList(currIdx) {
 
     list.appendChild(el);
   });
-
-  // 현재 아이템으로 스크롤
-  scrollToCurrent(currIdx);
 }
 
 function scrollToCurrent(currIdx) {
@@ -647,28 +680,8 @@ function scrollToCurrent(currIdx) {
 }
 
 function updateSchedList(currIdx) {
-  // 이미 빌드된 리스트가 있으면 클래스만 업데이트
-  const list = document.getElementById('sched-list');
-  if (!list.children.length || items.length !== list.children.length) {
-    buildSchedList(currIdx);
-    return;
-  }
-
-  const nowMin = new Date().getHours()*60 + new Date().getMinutes();
-  Array.from(list.children).forEach((el, i) => {
-    el.className = 'sched-item';
-    if (i === currIdx) {
-      el.classList.add('active');
-    } else if (items[i] && items[i].min > nowMin) {
-      el.classList.add('future');
-    }
-  });
-
-  // 현재 아이템이 바뀌었을 때만 스크롤
-  if (currIdx !== prevCurrIdx) {
-    scrollToCurrent(currIdx);
-    prevCurrIdx = currIdx;
-  }
+  // 항상 rebuild (3개 슬라이스가 바뀔 수 있으므로)
+  buildSchedList(currIdx);
 }
 
 /* ════════ SCHEDULE ════════ */
@@ -749,13 +762,56 @@ function updateClock(){
 const WI = ['☀️','🌤️','⛅','☁️','🌫️','🌦️','🌧️','❄️','🌨️','⛈️'];
 const WD = ['맑음','대체로 맑음','구름 조금','흐림','안개','이슬비','비','눈','눈 소나기','뇌우'];
 function wi(c){ return c===0?0:c<=2?1:c===3?3:c<=49?4:c<=57?5:c<=65?6:c<=77?7:c<=86?8:9; }
+
+function umbrellaClipColor(prob) {
+  if (prob < 20)  return 'rgba(96,165,250,0.25)';
+  if (prob < 40)  return 'rgba(96,165,250,0.55)';
+  if (prob < 70)  return '#3b82f6';
+  return '#f87171';
+}
+function umbrellaHandleColor(prob) {
+  return prob < 20 ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.55)';
+}
+function pctClass(prob) {
+  if (prob < 20)  return 'low';
+  if (prob < 50)  return 'mid';
+  if (prob < 80)  return 'high';
+  return 'heavy';
+}
+
+function renderUmbrellaSlot(prob, label, id) {
+  const fillH = Math.round(prob / 100 * 32); // 최대 채움 높이 32px (dome 영역)
+  const fillY = 32 - fillH;
+  const fill  = umbrellaClipColor(prob);
+  const stroke= umbrellaHandleColor(prob);
+  const cls   = pctClass(prob);
+  return `<div class="rain-slot">
+    <div class="rain-umb">
+      <svg viewBox="0 0 40 52" width="32" height="38" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="uc${id}">
+            <rect x="0" y="${fillY}" width="40" height="${fillH}"/>
+          </clipPath>
+        </defs>
+        <path d="M20 4 A16 16 0 0 1 36 20 L4 20 A16 16 0 0 1 20 4 Z" fill="${fill}" clip-path="url(#uc${id})"/>
+        <path d="M20 4 A16 16 0 0 1 36 20 L4 20 A16 16 0 0 1 20 4 Z" fill="none" stroke="${stroke}" stroke-width="1.8"/>
+        <line x1="20" y1="20" x2="20" y2="40" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M20 40 Q20 48 15 48 Q10 48 10 42" fill="none" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="rain-pct ${cls}">${prob}%</div>
+    <div class="rain-label">${label}</div>
+  </div>`;
+}
+
 async function fetchWeather(){
   try{
     const d=await(await fetch(
       'https://api.open-meteo.com/v1/forecast?latitude=37.3595&longitude=127.1052'+
       '&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code'+
-      '&daily=precipitation_probability_max,precipitation_sum'+
-      '&timezone=Asia%2FSeoul'
+      '&hourly=precipitation_probability'+
+      '&daily=precipitation_sum'+
+      '&timezone=Asia%2FSeoul&forecast_days=1'
     )).json(), c=d.current, x=wi(c.weather_code);
     document.getElementById('wb-icon').textContent  = WI[x];
     document.getElementById('wb-temp').textContent  = Math.round(c.temperature_2m)+'°';
@@ -763,19 +819,26 @@ async function fetchWeather(){
     document.getElementById('wb-feels').textContent = Math.round(c.apparent_temperature)+'°';
     document.getElementById('wb-humid').textContent = c.relative_humidity_2m+'%';
 
-    // 강수 예보
+    // 기존 wb-rain 숨김 (우산으로 대체)
     const rainEl = document.getElementById('wb-rain');
-    if (d.daily) {
-      const prob = d.daily.precipitation_probability_max?.[0] ?? null;
-      const sum  = d.daily.precipitation_sum?.[0] ?? null;
-      if (prob !== null) {
-        let rainTxt = `🌧 강수확률 ${prob}%`;
-        if (sum > 0) rainTxt += `  ${sum}mm`;
-        rainEl.textContent = rainTxt;
-        rainEl.style.display = 'block';
-        // 확률 낮으면 흐리게
-        rainEl.style.opacity = prob < 20 ? '0.45' : '1';
-      }
+    if (rainEl) rainEl.style.display = 'none';
+
+    // 시간별 강수확률 — 우산 그래픽
+    const hourProbs = d.hourly?.precipitation_probability || [];
+    const nowH = new Date().getHours();
+    const rainBox = document.getElementById('rain-forecast');
+    if (hourProbs.length && rainBox) {
+      const offsets = [0, 2, 4, 6];
+      const labels  = ['지금', '+2시간', '+4시간', '+6시간'];
+      let html = '';
+      offsets.forEach((off, i) => {
+        const h = nowH + off;
+        const prob = h < hourProbs.length ? (hourProbs[h] ?? 0) : 0;
+        if (i > 0) html += '<div class="rain-divider"></div>';
+        html += renderUmbrellaSlot(prob, labels[i], i);
+      });
+      rainBox.innerHTML = html;
+      rainBox.style.display = 'flex';
     }
   }catch{ document.getElementById('wb-desc').textContent='날씨 정보 없음'; }
 }
